@@ -1,0 +1,24 @@
+{
+  "format": "decomphub.progress/v1",
+  "repository": "https://github.com/amnios-dev/decomphub-progress-e2e",
+  "tracks": [
+    {
+      "id": "fixture-code",
+      "label": "Synthetic matching functions",
+      "scope": "Artificial protocol-test counters only",
+      "measurement": null
+    },
+    {
+      "id": "fixture-shaders",
+      "label": "Synthetic shader entries",
+      "scope": "Artificial protocol-test counters only",
+      "measurement": null
+    },
+    {
+      "id": "fixture-unknown",
+      "label": "Unmeasured fixture",
+      "scope": "Unknown is not zero",
+      "measurement": null
+    }
+  ]
+}
