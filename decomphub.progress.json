@@ -6,13 +6,23 @@
       "id": "fixture-code",
       "label": "Synthetic matching functions",
       "scope": "Artificial protocol-test counters only",
-      "measurement": null
+      "measurement": {
+        "kind": "ratio",
+        "completed": 37,
+        "total": 100,
+        "unit": "functions"
+      }
     },
     {
       "id": "fixture-shaders",
       "label": "Synthetic shader entries",
       "scope": "Artificial protocol-test counters only",
-      "measurement": null
+      "measurement": {
+        "kind": "ratio",
+        "completed": 12,
+        "total": 20,
+        "unit": "entries"
+      }
     },
     {
       "id": "fixture-unknown",

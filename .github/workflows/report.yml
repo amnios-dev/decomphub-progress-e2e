@@ -1,0 +1,27 @@
+name: Progress report integration check
+on:
+  push:
+    branches: [main]
+    paths: ['decomphub.progress.json', '.github/workflows/report.yml']
+permissions:
+  contents: read
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    env:
+      DECOMPHUB_TEST_ENDPOINT: ${{ vars.DECOMPHUB_TEST_ENDPOINT }}
+    steps:
+      - name: Verify the merged public report and notify the isolated test instance
+        if: env.DECOMPHUB_TEST_ENDPOINT != ''
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl --fail-with-body --max-time 30 "https://raw.githubusercontent.com/$GITHUB_REPOSITORY/$GITHUB_SHA/decomphub.progress.json" -o report.json
+          jq -e '.format == "decomphub.progress/v1" and .tracks[0].measurement.completed == 37 and .tracks[1].measurement.completed == 12 and .tracks[2].measurement == null' report.json
+          jq -n --arg repository "https://github.com/$GITHUB_REPOSITORY" --arg revision "$GITHUB_SHA" '{repository:$repository,revision:$revision}' > hint.json
+          status=$(curl --silent --show-error --fail-with-body --max-time 30 -H 'Content-Type: application/json' --data-binary @hint.json -o response.json -w '%{http_code}' "$DECOMPHUB_TEST_ENDPOINT")
+          cat response.json
+          test "$status" = 202
+          jq -e '.queued == true' response.json
+          printf 'Merged revision: %s\nRefresh hint: HTTP %s\n' "$GITHUB_SHA" "$status" >> "$GITHUB_STEP_SUMMARY"
